@@ -1,0 +1,12 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+<h1>{{error}}</h1>
+<h2>{{thisBook.name}}</h2>
+<body>
+    {% for course in courses %}
+   <p><a href="/{{userid}}/{{bookid}}/{{course.id}}/viewcourse">{{course.name}}</a></p> 
+    {% endfor %}
+   <p><a href="/{{userid}}/{{bookid}}/addcourse">Add a New Course</a></p> 
+</body>
+{% endblock %}

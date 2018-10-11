@@ -1,0 +1,12 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+<h2>Your Books</h2>
+<body>
+ 
+    {% for book in books%}
+    <p><a href="/{{userid}}/{{book.id}}/viewbook">{{book.name}}</a></p>
+    {% endfor %}
+    <a href="/{{userid}}/newbook">Add another book</a>
+</body>
+{% endblock %}

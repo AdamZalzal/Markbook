@@ -1,0 +1,12 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+<h2>Add a New Book</h2>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Add</button>
+    </form>
+</body>
+{% endblock %}
