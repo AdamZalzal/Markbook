@@ -40,8 +40,11 @@ urlpatterns = [
     url(r'^(?P<userid>\d+)/newbook$', app.views.newBook, name='newBook'),
     url(r'^(?P<userid>\d+)/booklist$', app.views.bookList, name='bookList'),
     url(r'^(?P<userid>\d+)/(?P<bookid>\d+)/viewbook$', app.views.viewBook, name='viewBook'),
+    url(r'^(?P<userid>\d+)/(?P<bookid>\d+)/deletebook$', app.views.deleteBook, name='deleteBook'),
     url(r'^(?P<userid>\d+)/(?P<bookid>\d+)/addcourse$', app.views.addCourse, name='addCourse'),
     url(r'^(?P<userid>\d+)/(?P<bookid>\d+)/(?P<courseid>\d+)/viewcourse$', app.views.viewGrades, name='viewGrades'),
+    url(r'^(?P<userid>\d+)/(?P<bookid>\d+)/(?P<courseid>\d+)/deletecourse$', app.views.deleteCourse, name='deleteCourse'),
+    url(r'^(?P<userid>\d+)/(?P<bookid>\d+)/(?P<courseid>\d+)/(?P<itemid>\d+)/deleteitem$', app.views.deleteItem, name='deleteItem'),
     url(r'^createaccount$', app.views.createAccount, name='createAccount'),
 
     # Uncomment the admin/doc line below to enable admin documentation:

@@ -5,8 +5,22 @@
 <body>
  
     {% for book in books%}
-    <p><a href="/{{userid}}/{{book.id}}/viewbook">{{book.name}}</a></p>
+    <table>
+    <tr>
+        <td><form action="/{{userid}}/{{book.id}}/viewbook">
+    <input type="submit" value="{{book.name}}" />
+    </form></td>
+    <td>
+     <a href="/{{userid}}/{{book.id}}/deletebook">Delete</a>
+    </td>
+    </tr>
+    </table>
+   
+    
     {% endfor %}
-    <a href="/{{userid}}/newbook">Add another book</a>
+    <form action="/{{userid}}/newbook">
+    <input type="submit" value="Add Another Book" />
+    </form>
+   
 </body>
 {% endblock %}

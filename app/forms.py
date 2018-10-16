@@ -25,9 +25,9 @@ class BootstrapAuthenticationForm(AuthenticationForm):
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ['name', 'num_courses']
+        fields = ['name']
         labels ={'name': _('What is the name of this markbook?'),
-                  'num_courses' :_( 'How many courses are in this markbook?')
+                  
                   }
 
 class CourseForm(forms.ModelForm):

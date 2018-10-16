@@ -57,11 +57,14 @@ def newBook(request,userid):
     
     if request.method == 'POST':
         form = BookForm(request.POST)
-        temp = form.save()
-        temp.user = User.objects.get( id = userid)
-        temp.save()
-        print('here')
-        return HttpResponseRedirect('/'+userid+'/booklist')
+        if form.is_valid():
+            temp = form.save()
+            temp.user = User.objects.get( id = userid)
+            temp.num_courses = 0
+            temp.save()
+            print('here')
+            return HttpResponseRedirect('/'+userid+'/booklist')
+        return HttpResponseRedirect('/'+userid+'/newbook')
     else:
         assert isinstance(request, HttpRequest)
         form= BookForm()
@@ -166,28 +169,36 @@ def viewGrades(request,userid,bookid,courseid):
            getRequired(thisCourse)
        form1 = CourseForm(instance = thisCourse)
        form= GradeFormSet(queryset = Item.objects.filter(course = thisCourse))
+       print('current')
+       print(thisCourse.current_mark)
        return render(request, 'app/viewcourse.html',{'form':form,
                                                      'bookid': bookid,
                                                      'userid': userid,
-                                                     'coursied': courseid,
+                                                     'courseid': courseid,
                                                      'thisCourse':thisCourse,
                                                      'form1': form1})
 
 
 def updateMark(thisCourse):
     grades = Item.objects.filter(course = thisCourse)
-    thisCourse.current_mark=0.0
+    thisCourse.current_mark=0.0000
     weight_sum = 0.0 
-    for grade in grades:
-        if(grade.mark!=None and grade.weight!=None):
-            thisCourse.current_mark += grade.mark*grade.weight
-            grade.required_mark = None
-            grade.save()
-            weight_sum = weight_sum + grade.weight
-            thisCourse.save()
-    print(thisCourse.completion)
-    if (weight_sum!=0.0):
-        thisCourse.current_mark = thisCourse.current_mark/weight_sum
+    print('here')
+    print(len(grades))
+    
+    if len(grades)!=0:
+        for grade in grades:
+            if(grade.mark!=None and grade.weight!=None):
+                thisCourse.current_mark += grade.mark*grade.weight
+                grade.required_mark = None
+                grade.save()
+                weight_sum = weight_sum + grade.weight
+                thisCourse.save()
+        print(thisCourse.completion)
+        if (weight_sum!=0.0):
+            thisCourse.current_mark = thisCourse.current_mark/weight_sum
+    thisCourse.save()
+    print(thisCourse.current_mark)
 
 def createAccount(request):
     if request.method == 'POST':
@@ -209,16 +220,38 @@ def createAccount(request):
         return render(request, 'app/createaccount.html',{'form':form})
 def getRequired(thisCourse):
     grades = Item.objects.filter(course = thisCourse)
-    weight_completed = 0.0
+    weight= 0.0
+    completed_weight= 0.0
+    remaining_weight = 0.0
     for grade in grades:
-        if(grade.mark!=None and grade.weight != None):
-            weight_completed += grade.weight
-    remainder = 100 - weight_completed
-    if remainder!= 100 and remainder!=0:
-        required = (thisCourse.goal_mark - (thisCourse.current_mark*weight_completed*0.01))/remainder
-        required *= 100
-        for grade in grades:
-            if(grade.mark== None and grade.weight !=None):
-                grade.required_mark = required
-                grade.save()
+        if(grade.weight != None):
 
+            weight += grade.weight
+            if(grade.mark != None):
+                completed_weight += grade.mark*grade.weight*0.01
+            else:
+                remaining_weight += grade.weight
+    if remaining_weight!=0.0:
+        required = (weight*thisCourse.goal_mark*0.01-completed_weight)/remaining_weight
+        for grade in grades:
+             if(grade.mark== None and grade.weight !=None):
+                 grade.required_mark = required
+                 grade.save()
+
+
+def deleteBook(request,userid,bookid):
+    thisBook = Book.objects.get(id = bookid)
+    thisBook.delete()
+    return HttpResponseRedirect('/' + userid + '/booklist')
+
+def deleteCourse(request,userid,bookid,courseid):
+    thisCourse = Course.objects.get(id = courseid)
+    thisCourse.delete()
+    return HttpResponseRedirect('/' + userid + '/' + bookid + '/viewbook')
+
+def deleteItem(request,userid,bookid,courseid,itemid):
+    thisItem = Item.objects.get(id = itemid)
+    thisItem.delete()
+    thisCourse = Course.objects.get(id= courseid)
+    updateMark(thisCourse)
+    return HttpResponseRedirect('/' + userid + '/' + bookid + '/' + courseid + '/viewcourse')

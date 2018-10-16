@@ -5,8 +5,13 @@
 <h2>{{thisBook.name}}</h2>
 <body>
     {% for course in courses %}
-   <p><a href="/{{userid}}/{{bookid}}/{{course.id}}/viewcourse">{{course.name}}</a></p> 
+    <form action="/{{userid}}/{{bookid}}/{{course.id}}/viewcourse">
+    <input type="submit" value="{{course.name}}" /><a href="/{{userid}}/{{bookid}}/{{course.id}}/deletecourse">Delete</a>
+    </form>
+ 
     {% endfor %}
-   <p><a href="/{{userid}}/{{bookid}}/addcourse">Add a New Course</a></p> 
+    <form action="/{{userid}}/{{bookid}}/addcourse">
+    <input type="submit" value="Add New Course" />
+    </form>
 </body>
 {% endblock %}

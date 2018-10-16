@@ -7,8 +7,11 @@
 <h2>{{form1.instance.name}} </h2>
     {{form1.name.as_hidden}}
     
-<h3>
+<h3>{% if form1.instance.current_mark == 0 %}
     Current Grade = {{form1.instance.current_mark}}
+    {% else %}
+    Current Grade = {{form1.instance.current_mark|floatformat:2}}
+    {% endif %}
     <br />
 
     Target Grade = {{form1.goal_mark}} <button type="submit" name="update">Update</button></h3> 
@@ -20,7 +23,9 @@
     {{ form.management_form }}
 
     {% for forms in form %}
-        <p>{{forms.as_table}}<button type="submit">Save</button> {% if forms.instance.required_mark != None %}  Required = {{forms.instance.required_mark}} {% endif %} </p>  
+        
+        <p>{{forms.as_table}} <button type="submit">Save</button> {% if forms.instance.id != None %}<a href="/{{userid}}/{{bookid}}/{{courseid}}/{{forms.instance.id}}/deleteitem">Delete</a> {% endif %} {% if forms.instance.required_mark != None %}  Required = {{forms.instance.required_mark|floatformat:2}} {% endif %} </p>  
+        
         
     {%endfor%}
     </form>
