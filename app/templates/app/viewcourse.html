@@ -59,7 +59,7 @@
         <table class="table">
     {% for forms in form %}
         
-        <tr><td>{{forms.name.label}}: {{forms.name}}</td><td>{{forms.weight.label}}: {{forms.weight}}</td><td>{{forms.mark.label}}: {{forms.mark}}</td> <td><button type="submit" class="button">Save</button> {% if forms.instance.id != None %}<a href="/{{userid}}/{{bookid}}/{{courseid}}/{{forms.instance.id}}/deleteitem">Delete</a> {% endif %}</td><td> {% if forms.instance.required_mark != None %}  Required = {{forms.instance.required_mark|floatformat:2}}% {% endif %}</td></tr>
+        <tr><td>{{forms.id.as_hidden}}{{forms.name.label}}: {{forms.name}}</td><td>{{forms.weight.label}}: {{forms.weight}}</td><td>{{forms.mark.label}}: {{forms.mark}}</td> <td><button type="submit" class="button">Save</button> {% if forms.instance.id != None %}<a href="/{{userid}}/{{bookid}}/{{courseid}}/{{forms.instance.id}}/deleteitem">Delete</a> {% endif %}</td><td> {% if forms.instance.required_mark != None %}  Required = {{forms.instance.required_mark|floatformat:2}}% {% endif %}</td></tr>
         
         
     {%endfor%}
