@@ -1,17 +1,52 @@
 ﻿{% extends "app/layout.html" %}
 
 {% block content %}
+<style>
+    .button {
+    background: #41B3C3;
+       
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 7px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    }
+    .button2 {
+        background: #116571;
+       
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 7px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    }
+    .title {
+        color: #253f43;
+    }
+    .delete {
+        text-decoration: none;
+        font-size: 12px;
+    }
+</style>
+
 <h1>{{error}}</h1>
 <h2>{{thisBook.name}}</h2>
+<br />
 <body>
     {% for course in courses %}
     <form action="/{{userid}}/{{bookid}}/{{course.id}}/viewcourse">
-    <input type="submit" value="{{course.name}}" /><a href="/{{userid}}/{{bookid}}/{{course.id}}/deletecourse">Delete</a>
+    <input class="button" type="submit" value="{{course.name}}" /><div class="delete"><a href="/{{userid}}/{{bookid}}/{{course.id}}/deletecourse">Delete</a></div>
     </form>
  
     {% endfor %}
     <form action="/{{userid}}/{{bookid}}/addcourse">
-    <input type="submit" value="Add New Course" />
+    <input type="submit"  class ="button2" value="Add New Course" />
     </form>
 </body>
 {% endblock %}

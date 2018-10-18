@@ -5,7 +5,7 @@ Definition of urls for Markbook.
 from datetime import datetime
 from django.conf.urls import url
 import django.contrib.auth.views
-
+from django.contrib.auth.views import LoginView, LogoutView
 import app.forms
 import app.views
 
@@ -20,22 +20,14 @@ urlpatterns = [
     url(r'^contact$', app.views.contact, name='contact'),
     url(r'^about$', app.views.about, name='about'),
     url(r'^login/$',
-        django.contrib.auth.views.login,
-        {
-            'template_name': 'app/login.html',
-            'authentication_form': app.forms.BootstrapAuthenticationForm,
-            'extra_context':
-            {
+        LoginView.as_view(template_name="app/login.html", authentication_form = app.forms.BootstrapAuthenticationForm, extra_context = {
                 'title': 'Log in',
                 'year': datetime.now().year,
-            }
-        },
+            }),
         name='login'),
     url(r'^logout$',
-        django.contrib.auth.views.logout,
-        {
-            'next_page': '/',
-        },
+        LogoutView.as_view(next_page = '/'),
+        
         name='logout'),
     url(r'^(?P<userid>\d+)/newbook$', app.views.newBook, name='newBook'),
     url(r'^(?P<userid>\d+)/booklist$', app.views.bookList, name='bookList'),

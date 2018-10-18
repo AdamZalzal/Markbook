@@ -54,7 +54,10 @@ def about(request):
     )
 @login_required(login_url='/login/')
 def newBook(request,userid):
-    
+    if userid != None:
+        safe = Authentication(request.user.id, userid)
+        if not safe:
+            return HttpResponseRedirect('/')
     if request.method == 'POST':
         form = BookForm(request.POST)
         if form.is_valid():
@@ -75,8 +78,15 @@ def newBook(request,userid):
 
 @login_required(login_url='/login/')
 def bookList(request,userid):
+    
     assert isinstance(request, HttpRequest)
     thisUser = User.objects.get( id = userid)
+    if userid != None:
+        safe = Authentication(request.user.id, userid)
+        print(safe)
+        if safe == False:
+            return HttpResponseRedirect('/')
+
     books = Book.objects.filter(user = thisUser)
     bookstotal = Book.objects.all()
     length2 = len(bookstotal)
@@ -86,12 +96,18 @@ def bookList(request,userid):
 @login_required(login_url='/login/')
 def viewBook(request,userid,bookid):
     assert isinstance(request, HttpRequest)
+    safe = Authentication(request.user.id, userid)
+    if not safe:
+        return HttpResponseRedirect('/')
     thisBook = Book.objects.get(id = bookid)
     courses = Course.objects.filter(book = thisBook)
     return render(request,'app/viewbook.html', {'userid':userid,'bookid':bookid,'courses':courses,'thisBook':thisBook})
 
 @login_required(login_url='/login/')
 def addCourse(request,userid,bookid):
+    safe = Authentication(request.user.id, userid)
+    if not safe:
+        return HttpResponseRedirect('/')
     if request.method == 'POST':
        form = CourseForm(request.POST)
        thisBook = Book.objects.get( id = bookid)
@@ -111,6 +127,9 @@ def addCourse(request,userid,bookid):
 
 @login_required(login_url='/login/')
 def viewGrades(request,userid,bookid,courseid):
+    safe = Authentication(request.user.id, userid)
+    if not safe:
+        return HttpResponseRedirect('/')
     if request.method == 'POST' and 'update' in request.POST:
        thisCourse = Course.objects.get(id = courseid)
        form1 = CourseForm( request.POST, instance = thisCourse)
@@ -235,23 +254,41 @@ def getRequired(thisCourse):
         required = (weight*thisCourse.goal_mark*0.01-completed_weight)/remaining_weight
         for grade in grades:
              if(grade.mark== None and grade.weight !=None):
-                 grade.required_mark = required
+                 grade.required_mark = required*100
                  grade.save()
 
 
 def deleteBook(request,userid,bookid):
+    safe = Authentication(request.user.id, userid)
+    if not safe:
+        return HttpResponseRedirect('/')
     thisBook = Book.objects.get(id = bookid)
     thisBook.delete()
     return HttpResponseRedirect('/' + userid + '/booklist')
 
 def deleteCourse(request,userid,bookid,courseid):
+    safe = Authentication(request.user.id, userid)
+    if not safe:
+        return HttpResponseRedirect('/')
     thisCourse = Course.objects.get(id = courseid)
     thisCourse.delete()
     return HttpResponseRedirect('/' + userid + '/' + bookid + '/viewbook')
 
 def deleteItem(request,userid,bookid,courseid,itemid):
+    safe = Authentication(request.user.id, userid)
+    if not safe:
+        return HttpResponseRedirect('/')
     thisItem = Item.objects.get(id = itemid)
     thisItem.delete()
     thisCourse = Course.objects.get(id= courseid)
     updateMark(thisCourse)
     return HttpResponseRedirect('/' + userid + '/' + bookid + '/' + courseid + '/viewcourse')
+
+def Authentication(thisUser,id):
+    print(thisUser)
+    print(id)
+    if int(thisUser) != int(id):
+        return False
+    else:
+        return True
+

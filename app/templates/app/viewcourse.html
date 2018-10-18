@@ -1,6 +1,40 @@
 ﻿{% extends "app/layout.html" %}
 
 {% block content %}
+<style>
+    .table {
+        background-color: aquamarine;
+        border-color: aquamarine;
+    }
+    .button {
+    background: #41B3C3;
+       
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 7px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    }
+    .button2 {
+    background: #41B3C3;
+       
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 10px 27px;
+    padding-top:14px;
+    text-align: center;
+    line-height: 20px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    display: inline;
+    }
+
+</style>
 <form method="post">
    
     {% csrf_token %}
@@ -8,27 +42,30 @@
     {{form1.name.as_hidden}}
     
 <h3>{% if form1.instance.current_mark == 0 %}
-    Current Grade = {{form1.instance.current_mark}}
+    Current Grade = {{form1.instance.current_mark}}%
     {% else %}
-    Current Grade = {{form1.instance.current_mark|floatformat:2}}
+    Current Grade = {{form1.instance.current_mark|floatformat:2}}%
     {% endif %}
     <br />
 
-    Target Grade = {{form1.goal_mark}} <button type="submit" name="update">Update</button></h3> 
+    Target Grade = {{form1.goal_mark}} <button type="submit" class="button2"name="update">Update</button></h3> 
 <br />
 </form>
 <body>
-    <form method="post">
+    
+    <form method="post" class="table">
     {% csrf_token %}
     {{ form.management_form }}
-
+        <table class="table">
     {% for forms in form %}
         
-        <p>{{forms.as_table}} <button type="submit">Save</button> {% if forms.instance.id != None %}<a href="/{{userid}}/{{bookid}}/{{courseid}}/{{forms.instance.id}}/deleteitem">Delete</a> {% endif %} {% if forms.instance.required_mark != None %}  Required = {{forms.instance.required_mark|floatformat:2}} {% endif %} </p>  
+        <tr><td>{{forms.name.label}}: {{forms.name}}</td><td>{{forms.weight.label}}: {{forms.weight}}</td><td>{{forms.mark.label}}: {{forms.mark}}</td> <td><button type="submit" class="button">Save</button> {% if forms.instance.id != None %}<a href="/{{userid}}/{{bookid}}/{{courseid}}/{{forms.instance.id}}/deleteitem">Delete</a> {% endif %}</td><td> {% if forms.instance.required_mark != None %}  Required = {{forms.instance.required_mark|floatformat:2}}% {% endif %}</td></tr>
         
         
     {%endfor%}
+        </table>
     </form>
+    
 
 </body>
 {% endblock %}

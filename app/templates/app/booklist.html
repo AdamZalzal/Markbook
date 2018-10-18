@@ -1,17 +1,55 @@
 ﻿{% extends "app/layout.html" %}
 
 {% block content %}
+<style>
+    .button {
+    background: #41B3C3;
+       
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 7px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    }
+    .button2 {
+        background: #116571;
+       
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 7px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    }
+    .title {
+        color: #253f43;
+    }
+    .delete {
+        text-decoration: none;
+        font-size: 12px;
+    }
+</style>
+<div class="title">
 <h2>Your Books</h2>
+</div>
+<br />
 <body>
  
     {% for book in books%}
     <table>
     <tr>
         <td><form action="/{{userid}}/{{book.id}}/viewbook">
-    <input type="submit" value="{{book.name}}" />
+    <input type="submit" class ="button" value="{{book.name}}" />
     </form></td>
     <td>
+        <div class="delete">
      <a href="/{{userid}}/{{book.id}}/deletebook">Delete</a>
+            </div>
     </td>
     </tr>
     </table>
@@ -19,7 +57,7 @@
     
     {% endfor %}
     <form action="/{{userid}}/newbook">
-    <input type="submit" value="Add Another Book" />
+    <input type="submit" class="button2" value="Add Another Book" />
     </form>
    
 </body>
