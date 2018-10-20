@@ -14,6 +14,18 @@
     display: inline-block;
     font-size: 12px;
     }
+      .button2 {
+        background: #116571;
+
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 7px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    }
 </style>
 <h2>Add a New Course</h2>
 <body>
@@ -22,5 +34,9 @@
         {{form.as_p}}
         <button type="submit" class="button">Add</button>
     </form>
+<form action="/{{userid}}/{{bookid}}/viewbook">
+    <input type="submit"  class ="button2" value="Back" />
+    </form>
+</body>
 </body>
 {% endblock %}

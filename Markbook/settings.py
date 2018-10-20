@@ -26,7 +26,9 @@ SECRET_KEY = '179ad63d-f5ea-4781-95d9-8c8e982085fc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['adams-markbook.herokuapp.com']
+ALLOWED_HOSTS = ['adams-markbook.herokuapp.com',
+                 '127.0.0.1:8000',
+                 '127.0.0.1']
 
 
 # Application definition

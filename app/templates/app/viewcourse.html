@@ -20,7 +20,7 @@
     }
     .button2 {
     background: #41B3C3;
-       
+
     border-radius: 8px;
     border: none;
     color: white;
@@ -33,7 +33,18 @@
     font-size: 16px;
     display: inline;
     }
+.button3 {
+        background: #116571;
 
+    border-radius: 8px;
+    border: none;
+    color: white;
+    padding: 7px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    }
 </style>
 <form method="post">
    
@@ -65,7 +76,9 @@
     {%endfor%}
         </table>
     </form>
-    
+    <form action="/{{userid}}/{{bookid}}/viewbook">
+    <input type="submit"  class ="button3" value="Back" />
+    </form>
 
 </body>
 {% endblock %}

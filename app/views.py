@@ -65,13 +65,13 @@ def newBook(request,userid):
             temp.user = User.objects.get( id = userid)
             temp.num_courses = 0
             temp.save()
-            print('here')
+
             return HttpResponseRedirect('/'+userid+'/booklist')
         return HttpResponseRedirect('/'+userid+'/newbook')
     else:
         assert isinstance(request, HttpRequest)
         form= BookForm()
-        print(request.method)
+
         return render(request, 'app/newbook.html',{'form':form})
    
 
@@ -83,7 +83,7 @@ def bookList(request,userid):
     thisUser = User.objects.get( id = userid)
     if userid != None:
         safe = Authentication(request.user.id, userid)
-        print(safe)
+
         if safe == False:
             return HttpResponseRedirect('/')
 
@@ -123,7 +123,7 @@ def addCourse(request,userid,bookid):
     else:
        assert isinstance(request, HttpRequest)
        form= CourseForm()
-       return render(request, 'app/newcourse.html',{'form':form})
+       return render(request, 'app/newcourse.html',{'form':form,'userid':userid,'bookid':bookid})
 
 @login_required(login_url='/login/')
 def viewGrades(request,userid,bookid,courseid):
@@ -134,9 +134,9 @@ def viewGrades(request,userid,bookid,courseid):
        thisCourse = Course.objects.get(id = courseid)
        form1 = CourseForm( request.POST, instance = thisCourse)
        form1.name = thisCourse.name
-       print('check')
+
+
        if form1.is_valid():
-           print('here')
            form1.save()
        else:
            print(form1.errors)
@@ -188,8 +188,6 @@ def viewGrades(request,userid,bookid,courseid):
            getRequired(thisCourse)
        form1 = CourseForm(instance = thisCourse)
        form= GradeFormSet(queryset = Item.objects.filter(course = thisCourse))
-       print('current')
-       print(thisCourse.current_mark)
        return render(request, 'app/viewcourse.html',{'form':form,
                                                      'bookid': bookid,
                                                      'userid': userid,
@@ -202,9 +200,7 @@ def updateMark(thisCourse):
     grades = Item.objects.filter(course = thisCourse)
     thisCourse.current_mark=0.0000
     weight_sum = 0.0 
-    print('here')
-    print(len(grades))
-    
+
     if len(grades)!=0:
         for grade in grades:
             if(grade.mark!=None and grade.weight!=None):
@@ -213,11 +209,9 @@ def updateMark(thisCourse):
                 grade.save()
                 weight_sum = weight_sum + grade.weight
                 thisCourse.save()
-        print(thisCourse.completion)
         if (weight_sum!=0.0):
             thisCourse.current_mark = thisCourse.current_mark/weight_sum
     thisCourse.save()
-    print(thisCourse.current_mark)
 
 def createAccount(request):
     if request.method == 'POST':
@@ -285,8 +279,6 @@ def deleteItem(request,userid,bookid,courseid,itemid):
     return HttpResponseRedirect('/' + userid + '/' + bookid + '/' + courseid + '/viewcourse')
 
 def Authentication(thisUser,id):
-    print(thisUser)
-    print(id)
     if int(thisUser) != int(id):
         return False
     else:
