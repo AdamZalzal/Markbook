@@ -45,11 +45,19 @@
     </form>
  
     {% endfor %}
+    <table>
+        <tr>
+            <td>
     <form action="/{{userid}}/{{bookid}}/addcourse">
     <input type="submit"  class ="button2" value="Add New Course" />
     </form>
+            </td>
+            <td>
 <form action="/{{userid}}/booklist">
     <input type="submit"  class ="button2" value="Back" />
     </form>
+            </td>
+        </tr>
+    </table>
 </body>
 {% endblock %}

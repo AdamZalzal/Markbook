@@ -56,12 +56,22 @@
    
     
     {% endfor %}
-    <form action="/{{userid}}/newbook">
+    <table>
+        <tr>
+            <td>
+        <form action="/{{userid}}/newbook">
     <input type="submit" class="button2" value="Add Another Book" />
     </form>
+            </td>
+            <td>
      <form action="/">
     <input type="submit" class="button2" value="Back" />
     </form>
+            </td>
+        </tr>
+
+    </table>
+
    
 </body>
 {% endblock %}
