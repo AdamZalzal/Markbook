@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['adams-markbook.herokuapp.com',
                  '127.0.0.1:8000',
-                 '127.0.0.1']
+                 '127.0.0.1',
+                 'localhost']
 
 
 # Application definition
@@ -81,13 +82,23 @@ WSGI_APPLICATION = 'Markbook.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #},
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dl9b8baqrt4d0',                      
+        'USER': 'ixjeynvbgorjad',
+        'PASSWORD': '397a44359b09a9c818d0ab0c48e48ce64f3fe79ceb2d20516a90b2c1ff3b24c0',
+        'HOST': 'ec2-54-83-13-119.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
+}
 
    
-}
+
 
 
 # Password validation
